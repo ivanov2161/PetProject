@@ -23,7 +23,8 @@ Run the project
 python manage.py runserver
 ```
 
-##Start learning
+## Start learning
+
 1. After registration, go to the stories section and add the unknown words.
 
 2. Next, from the main page, follow the link "Go to learn"
