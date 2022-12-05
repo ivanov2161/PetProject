@@ -1,6 +1,6 @@
 ## This is a site for study English words by short stories
 
-* Link http://golearneng.ru/ *
+*Link http://golearneng.ru/*
 
 Clone this repository
 ```bash
