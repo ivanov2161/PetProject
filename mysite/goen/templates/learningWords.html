@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %} Learning Words {% endblock %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/learningWords.css' %}" media="screen"> {% endblock %}
+{% block content %}
+
+<section class="u-clearfix u-custom-color-1 u-section-1" id="sec-1ab0">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <h2 class="u-text u-text-default u-text-1">{{ amount }} words left</h2>
+        <h1 class="u-text u-text-default u-text-2">{{ word }}</h1>
+
+        <div class="u-align-center-lg u-align-center-md u-align-center-sm u-align-center-xl u-form u-form-1">
+            <div class="content_see">
+                <progress value="{{ progress }}" max="8"></progress>
+            </div>
+
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                <div class="u-form-group u-form-name">
+                    {{ inputAnswer.as_p }}
+                </div>
+
+                <input class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-4 u-radius-6 u-btn-2"
+                       type="submit" value="Check">
+
+            </form>
+        </div>
+
+        <br>
+        <div class="u-align-center-lg u-align-center-md u-align-center-sm u-align-center-xl u-form u-form-2">
+            <h1 class="u-text u-text-default u-text-3">{{ answer }}</h1>
+            <h1 class="u-text u-text-default u-text-4" style="color:{{color}};">{{ out }}</h1>
+            <br>
+
+            <a href="/learningWords" accesskey="\"
+               class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-4 u-radius-6 u-btn-2" style="display:{{display_btn_next}};">NEXT</a>
+
+            <br>
+            <form class="form__see_translate" method="post">
+                {% csrf_token %}
+                <button class="btn__see"
+                        name="seeTranslate" value="seeTranslate">SEE
+                    TRANSLATE
+                </button>
+            </form>
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %} About {% endblock %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}" media="screen"> {% endblock %}
+{% block content %}
+
+<section class="u-clearfix u-custom-color-1 u-section-1" id="sec-5709">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <h3>This is a site for study English words by short stories</h3>
+        <h4>Start learning</h4>
+        <p>1. After registration, go to the stories section and add the unknown words.
+        <p>2. Next, from the main page, follow the link "Go to learn"</p>
+        <p>3. Enjoy learning</p>
+        <h4>Learning rules</h4>
+        <p>A word is considered learned after seven successful repeats.</p>
+        <p>Next study date = current date + day * word repeat count</p>
+        <p>If you clicked the "See translate" button, then the counter decreases by one</p>
+        <h4>Contact me:</h4>
+        <p>
+            <a href="mailto:ivanov2161@gmail.com"><img src="{% static 'images/logos/email.png' %}"></a>
+            <a href="https://www.instagram.com/_.pavelivanov._/"><img
+                    src="{% static 'images/logos/instagram.png' %}"></a>
+            <a href="https://t.me/katull_ivy"><img src="{% static 'images/logos/telegram.png' %}"></a>
+        </p>
+
+        <p>Site created by framework Django</p>
+    </div>
+</section>
+
+{% endblock %}

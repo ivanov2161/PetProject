@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} Sign Up {% endblock %}
+{% block content %}
+
+<div class="intro">
+    <div class="container">
+        <div class="intro__inner">
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                NAME <br>
+                {{ form.username }}<br><br>
+                EMAIL <br>
+                {{ form.email }}<br><br>
+                PASSWORD <br>
+                {{ form.password1 }}<br><br>
+                REPEAT PASSWORD <br>
+                {{ form.password2 }}<br><br>
+                <input class="btn" type="submit" value="sign up">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

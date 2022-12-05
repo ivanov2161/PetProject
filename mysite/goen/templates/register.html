@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} Sign Up {% endblock %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}" media="screen"> {% endblock %}
+{% block content %}
+<section class="u-align-center u-clearfix u-custom-color-1 u-section-1" id="sec-9525">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+        <div class="u-form u-form-1">
+
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="u-border-none u-btn_log u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-4 u-radius-6"
+                       type="submit" value="SIGN UP">
+            </form>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

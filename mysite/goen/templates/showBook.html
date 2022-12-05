@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %} Show Book {% endblock %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/showBook.css' %}" media="screen"> {% endblock %}
+{% block content %}
+
+<section class="u-clearfix u-custom-color-1 u-section-1" id="sec-5aca">
+    <div class="u-clearfix u-sheet u-sheet-1">
+        <h1 class="u-text u-text-default u-text-1">{{name_book}}</h1>
+        <h3 class="u-text u-text-default u-text-2"> Click on word to add</h3>
+
+        <form method="post">
+            {% csrf_token %}
+            {% for item in book %}
+            <p class="p__book">
+                {% for word in item.split %}
+                <button class="btn__text" name="add" value={{word}}>{{ word }}</button>
+                {% endfor %}
+            </p>
+            {% endfor %}
+        </form>
+
+        <h1 class="u-text u-text-default u-text-4">Added words to learn</h1>
+        <h3 class="u-text u-text-default u-text-5">Click on word to delete</h3>
+        <p class="u-text u-text-default u-text-6">
+
+        <form method="post">
+            {% csrf_token %}
+            {% for item in words %}
+            <button class="btn__text" name="delete" value={{item.pk}}>{{item.learnWord.wordOriginal}} -
+                {{item.learnWord.wordTranslate}}
+            </button>
+            <br>
+            {% endfor %}
+        </form>
+        </p>
+    </div>
+</section>
+
+{% endblock %}

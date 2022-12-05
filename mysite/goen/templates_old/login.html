@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %} Login {% endblock %}
+{% block content %}
+
+<div class="intro">
+    <div class="container">
+        <div class="intro__inner">
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                LOGIN<br>
+                {{ form.username }}<br><br>
+                PASSWORD<br>
+                {{ form.password}}<br><br>
+                <input class="btn" type="submit" value="ENTER">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
