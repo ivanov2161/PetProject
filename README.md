@@ -31,7 +31,7 @@ python manage.py runserver
 
 3. Enjoy learning
 
-Learning rules
+## Learning rules
 A word is considered learned after seven successful repeats.
 
 Next study date = current date + day * word repeat count
