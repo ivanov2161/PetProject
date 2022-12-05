@@ -1,17 +1,27 @@
 ## This is a site for study English words by short stories
 
 Clone this repository
-```git clone https://github.com/ivanov2161/PetProject```
+```bash
+git clone https://github.com/ivanov2161/PetProject
+```
 
 Install Django
-```pip install django```
+```bash
+pip install django
+```
 Install Google translator
-```pip install googletrans```
+```bash
+pip install googletrans
+```
 Intall Pillow
-```pip install Pillow```
+```bash
+pip install Pillow
+```
 
 Run the project
-```python manage.py runserver```
+```bash
+python manage.py runserver
+```
 
 ##Start learning
 1. After registration, go to the stories section and add the unknown words.
