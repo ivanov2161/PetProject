@@ -1,11 +1,13 @@
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from .forms import *
-from .utils import *
-from .services import *
+from .forms import RegisterUserForm, LoginUserForm, UploadBook
+from .models import Book, WordLearned
+from .utils import DataMixin
+from .services import get_words_to_learn, exam_or_see_words, add_word_to_learn, _temp_func
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -33,8 +35,7 @@ class LoginUser(DataMixin, LoginView):
 
 
 def home(request):
-    amount = len(get_words_to_learn(request.user.pk))
-
+    amount = get_words_to_learn(request.user.pk).count()
     users = User.objects.all()
     ranking_list = {}
 
@@ -52,6 +53,7 @@ def home(request):
 
 
 def about(request):
+    # _temp_func()
     return render(request, 'about.html')
 
 
@@ -90,9 +92,10 @@ def show_my_words(request):
     return render(request, 'showMyWords.html', {'words': words})
 
 
-def upload_book(request):
+def upload_story(request):
     if request.user.username == 'admin':
-        form = UploadBook(request.POST)
+        print(request.FILES)
+        form = UploadBook(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('/')
