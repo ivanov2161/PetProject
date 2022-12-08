@@ -11,7 +11,7 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('about/', about),
     path('learningWords/', exam_or_see_words, name='learningWords'),
-    path('uploadBook/', upload_book),
+    path('uploadBook/', upload_story),
     path('listOfBooks/', list_of_books),
     path('showBook/<int:book>', show_book_and_words, name='add_word'),
     path('showMyWords/', show_my_words),
