@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import RegisterUserForm, LoginUserForm, UploadStory
-from .models import Book, WordLearned
+from .models import Story, WordLearned
 from .utils import DataMixin
 from .services import get_words_to_learn, exam_or_see_words, add_word_to_learn, _temp_func
 
@@ -67,13 +67,13 @@ def learning_words(request):
 
 
 def list_of_stories(request):
-    stories = Book.objects.all()
+    stories = Story.objects.all()
     return render(request, 'listOfStories.html', {'books': stories})
 
 
 def show_story_and_words(request, story):
     user_pk = request.user.pk
-    story = Book.objects.get(pk=story)
+    story = Story.objects.get(pk=story)
     words = WordLearned.objects.filter(learnPerson=user_pk).filter(learnWord__book=story).order_by('pk')
     status = ''
 

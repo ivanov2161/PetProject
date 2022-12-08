@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from .models import Book
+from .models import Story
 
 CSS_CLASS = 'form-input u-radius-6 u-border-1 u-border-grey-30 u-input u-input-rectangle'
 
@@ -34,5 +34,5 @@ class UploadStory(ModelForm):
     cover = forms.ImageField(label='cover', widget=forms.ClearableFileInput)
 
     class Meta:
-        model = Book
+        model = Story
         fields = ['name', 'wholeText']
