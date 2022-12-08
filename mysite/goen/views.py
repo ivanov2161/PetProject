@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from .forms import RegisterUserForm, LoginUserForm, UploadBook
+from .forms import RegisterUserForm, LoginUserForm, UploadStory
 from .models import Book, WordLearned
 from .utils import DataMixin
 from .services import get_words_to_learn, exam_or_see_words, add_word_to_learn, _temp_func
@@ -66,25 +66,25 @@ def learning_words(request):
     return exam_or_see_words(request)
 
 
-def list_of_books(request):
-    books = Book.objects.all()
-    return render(request, 'listOfBooks.html', {'books': books})
+def list_of_stories(request):
+    stories = Book.objects.all()
+    return render(request, 'listOfStories.html', {'books': stories})
 
 
-def show_book_and_words(request, book):
+def show_story_and_words(request, story):
     user_pk = request.user.pk
-    book = Book.objects.get(pk=book)
-    words = WordLearned.objects.filter(learnPerson=user_pk).filter(learnWord__book=book).order_by('pk')
+    story = Book.objects.get(pk=story)
+    words = WordLearned.objects.filter(learnPerson=user_pk).filter(learnWord__book=story).order_by('pk')
     status = ''
 
     if request.method == 'POST':
         if request.POST.get('add'):
-            add_word_to_learn(request.POST.get('add').lower(), book, user_pk)
+            add_word_to_learn(request.POST.get('add').lower(), story, user_pk)
         elif request.POST.get('delete'):
             WordLearned.objects.filter(pk=request.POST.get('delete')).delete()
 
-    return render(request, 'showBook.html', {'words': words, 'name_book': book.name,
-                                             'book': book.wholeText.split('\n'), 'status': status})
+    return render(request, 'showStory.html', {'words': words, 'name_book': story.name,
+                                             'book': story.wholeText.split('\n'), 'status': status})
 
 
 def show_my_words(request):
@@ -95,12 +95,12 @@ def show_my_words(request):
 def upload_story(request):
     if request.user.username == 'admin':
         print(request.FILES)
-        form = UploadBook(request.POST, request.FILES)
+        form = UploadStory(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('/')
         else:
-            form = UploadBook()
-        return render(request, 'uploadBook.html', {'form': form})
+            form = UploadStory()
+        return render(request, 'uploadStory.html', {'form': form})
     else:
         return render(request, 'home.html')

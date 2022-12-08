@@ -21,9 +21,6 @@ def add_word_to_learn(word: str, book, user_pk) -> None:  # Recode this function
             word = Word.objects.create(wordOriginal=word,
                                        wordTranslate=translator.translate(word, dest='ru').text.lower(),
                                        wordDescription=_get_sentence_by_word(book.wholeText, word), book=book)
-            # word = Word.objects.create(wordOriginal=word,
-            #                            wordTranslate=translator.translate(word, dest='ru').text.lower(),
-            #                            wordDescription='', book=book)
 
         else:
             word = Word.objects.get(wordOriginal=word)

@@ -28,7 +28,7 @@ class LoginUserForm(AuthenticationForm):
     password = forms.CharField(label='PASSWORD', widget=forms.PasswordInput(attrs={'class': CSS_CLASS}))
 
 
-class UploadBook(ModelForm):
+class UploadStory(ModelForm):
     name = forms.CharField(label='TITLE', widget=forms.TextInput(attrs={'class': CSS_CLASS}))
     wholeText = forms.CharField(label='Text', widget=forms.Textarea(attrs={'class': CSS_CLASS}))
     cover = forms.ImageField(label='cover', widget=forms.ClearableFileInput)
