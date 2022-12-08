@@ -9,7 +9,7 @@ from random import choice
 import re
 
 
-def add_word_to_learn(word: str, book, user_pk) -> None:  # Recode this function
+def add_word_to_learn(word: str, story, user_pk) -> None:  # Recode this function
     """Adds word from story to learn """
 
     word = _delete_symbols(word)
@@ -20,7 +20,7 @@ def add_word_to_learn(word: str, book, user_pk) -> None:  # Recode this function
 
             word = Word.objects.create(wordOriginal=word,
                                        wordTranslate=translator.translate(word, dest='ru').text.lower(),
-                                       wordDescription=_get_sentence_by_word(book.wholeText, word), book=book)
+                                       wordDescription=_get_sentence_by_word(story.wholeText, word), story=story)
 
         else:
             word = Word.objects.get(wordOriginal=word)
@@ -145,4 +145,4 @@ def _temp_func():
 
     for word in words:
         Word.objects.filter(pk=word.pk).update(
-            wordDescription=_get_sentence_by_word(word.book.wholeText, word.wordOriginal))
+            wordDescription=_get_sentence_by_word(word.story.wholeText, word.wordOriginal))

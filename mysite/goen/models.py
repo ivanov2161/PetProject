@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Story(models.Model):
-    """Uploaded book"""
+    """Uploaded story"""
     objects = models.Manager()
     name = models.CharField(max_length=128)
     wholeText = models.TextField()
@@ -17,12 +17,12 @@ class Story(models.Model):
 
 
 class Word(models.Model):
-    """Words from book"""
+    """Words from story"""
     objects = models.Manager()
     wordOriginal = models.CharField(max_length=128)
     wordTranslate = models.CharField(max_length=128)
     wordDescription = models.TextField()
-    book = models.ForeignKey(Story, on_delete=models.CASCADE)
+    story = models.ForeignKey(Story, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.wordOriginal

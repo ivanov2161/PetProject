@@ -68,13 +68,13 @@ def learning_words(request):
 
 def list_of_stories(request):
     stories = Story.objects.all()
-    return render(request, 'listOfStories.html', {'books': stories})
+    return render(request, 'listOfStories.html', {'stories': stories})
 
 
 def show_story_and_words(request, story):
     user_pk = request.user.pk
     story = Story.objects.get(pk=story)
-    words = WordLearned.objects.filter(learnPerson=user_pk).filter(learnWord__book=story).order_by('pk')
+    words = WordLearned.objects.filter(learnPerson=user_pk).filter(learnWord__story=story).order_by('pk')
     status = ''
 
     if request.method == 'POST':
@@ -83,8 +83,8 @@ def show_story_and_words(request, story):
         elif request.POST.get('delete'):
             WordLearned.objects.filter(pk=request.POST.get('delete')).delete()
 
-    return render(request, 'showStory.html', {'words': words, 'name_book': story.name,
-                                             'book': story.wholeText.split('\n'), 'status': status})
+    return render(request, 'showStory.html', {'words': words, 'name_story': story.name,
+                                             'story': story.wholeText.split('\n'), 'status': status})
 
 
 def show_my_words(request):

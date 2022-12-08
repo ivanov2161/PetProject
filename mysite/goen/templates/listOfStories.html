@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} List of Books {% endblock %}
+{% block title %} List of Stories {% endblock %}
 {% load static %}
 {% block link %}
 <link rel="stylesheet" href="{% static 'css/listOfBooks.css' %}" media="screen"> {% endblock %}
@@ -9,7 +9,7 @@
     <div class="u-clearfix u-sheet u-sheet-1">
         <div class="u-expanded-width u-list u-list-1">
             <div class="u-repeater u-repeater-1">
-                {% for item in books %}
+                {% for item in stories %}
                 <div class="u-container-style u-list-item u-repeater-item">
                     <div class="u-container-layout u-similar-container u-container-layout-1">
                         <a href="/showStory/{{item.pk}}">
