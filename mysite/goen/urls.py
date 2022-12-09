@@ -10,7 +10,7 @@ urlpatterns = [
     path('register/', RegisterUser.as_view(), name='register'),
     path('logout/', logout_user, name='logout'),
     path('about/', about),
-    path('learningWords/', exam_or_see_words, name='learningWords'),
+    path('learningWords/', learning_words, name='learningWords'),
     path('uploadStory/', upload_story),
     path('listOfStories/', list_of_stories),
     path('showStory/<int:story>', show_story_and_words, name='add_word'),

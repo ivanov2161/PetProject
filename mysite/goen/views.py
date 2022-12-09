@@ -4,10 +4,10 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from .forms import RegisterUserForm, LoginUserForm, UploadStory
+from .forms import RegisterUserForm, LoginUserForm, UploadStory, Answer
 from .models import Story, WordLearned
 from .utils import DataMixin
-from .services import get_words_to_learn, exam_or_see_words, add_word_to_learn
+from .services import get_words_to_learn, check_words, add_word_to_learn
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -62,7 +62,28 @@ def logout_user(request):
 
 
 def learning_words(request):
-    return exam_or_see_words(request)
+    try:
+        words_list = get_words_to_learn(request.user.pk)
+        out = '...'
+        out_color = 'white'
+        answer = {'answer': '...'}
+        word = words_list.first().learnWord
+        progress = WordLearned.objects.filter(learnWord=word, learnPerson=request.user.pk)
+        display_btn_next = 'none'
+
+        if request.method == 'POST':
+            out, out_color, display_btn_next = check_words(request, answer, words_list, word)
+
+        return render(request, 'learningWords.html', {'inputAnswer': Answer(), 'word': word,
+                                                      'answer': answer['answer'], 'out': out, 'color': out_color,
+                                                      'progress': progress[0].count, 'amount': words_list.count(),
+                                                      'display_btn_next': display_btn_next})
+
+    except AttributeError:
+        return render(request, 'learningWords.html', {'inputAnswer': Answer(), 'word': 'The words are over',
+                                                      'answer': 'We are waiting for you tomorrow!',
+                                                      'out': '...', 'color': 'white', 'progress': '0',
+                                                      'display_btn_next': 'none'})
 
 
 def list_of_stories(request):

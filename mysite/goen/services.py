@@ -35,44 +35,30 @@ def get_words_to_learn(user_pk: int) -> QuerySet:
         is_learned=True)
 
 
-def exam_or_see_words(request: WSGIRequest) -> tuple:
+def check_words(request: WSGIRequest, answer: dict, words_list: QuerySet, word: Word) -> tuple:
     """Function for testing learning words"""
 
-    try:
-        words_list = get_words_to_learn(request.user.pk)
-        out = '...'
-        out_color = 'white'
-        answer = {'answer': '...'}
-        word = words_list.first().learnWord
-        progress = WordLearned.objects.filter(learnWord=word, learnPerson=request.user.pk)
-        display_btn_next = 'none'
+    out = '...'
+    out_color = 'white'
+    display_btn_next = 'none'
 
-        if request.method == 'POST':
-            if request.POST.get('seeTranslate') == 'seeTranslate':
-                _decrease_word_count(words_list)
-                answer['answer'] = word.wordOriginal
+    if request.POST.get('seeTranslate') == 'seeTranslate':
+        _decrease_word_count(words_list)
+        answer['answer'] = word.wordOriginal
+        return out, out_color, display_btn_next
 
-            elif word.wordOriginal == request.POST['answer'].lower():
-                _increase_word_count(words_list)
-                out = _out_compliment()
-                out_color = '#7bad45'
-                answer['answer'] = word.wordOriginal
-                display_btn_next = ''
+    elif word.wordOriginal == request.POST['answer'].lower():
+        _increase_word_count(words_list)
+        out = _out_compliment()
+        out_color = '#7bad45'
+        answer['answer'] = word.wordOriginal
+        display_btn_next = ''
+        return out, out_color, display_btn_next
 
-            else:
-                out = _out_disappointment()
-                out_color = '#d6a445'
-
-        return render(request, 'learningWords.html', {'inputAnswer': Answer(), 'word': word,
-                                                      'answer': answer['answer'], 'out': out, 'color': out_color,
-                                                      'progress': progress[0].count, 'amount': words_list.count(),
-                                                      'display_btn_next': display_btn_next})
-
-    except AttributeError:
-        return render(request, 'learningWords.html', {'inputAnswer': Answer(), 'word': 'The words are over',
-                                                      'answer': 'We are waiting for you tomorrow!',
-                                                      'out': '...', 'color': 'white', 'progress': '0',
-                                                      'display_btn_next': 'none'})
+    else:
+        out = _out_disappointment()
+        out_color = '#d6a445'
+        return out, out_color, display_btn_next
 
 
 def _decrease_word_count(words_list: QuerySet) -> None:
