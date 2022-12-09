@@ -1,9 +1,7 @@
 from datetime import datetime, timedelta
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
-from django.shortcuts import render
 from googletrans import Translator
-from goen.forms import Answer
 from goen.models import Word, WordLearned
 from random import choice
 import re
