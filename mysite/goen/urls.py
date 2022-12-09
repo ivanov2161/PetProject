@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
 from django.urls import path
-
-from goen.views import *
+from goen.views import home, LoginUser, RegisterUser, logout_user, about, learning_words, upload_story, \
+    list_of_stories, show_story_and_words, show_my_words
 from mysite import settings
 
 urlpatterns = [
