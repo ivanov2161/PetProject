@@ -2,12 +2,12 @@ from datetime import datetime, timedelta
 from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
 from googletrans import Translator
-from goen.models import Word, WordLearned
+from goen.models import Word, WordLearned, Story
 from random import choice
 import re
 
 
-def add_word_to_learn(word: str, story, user_pk) -> None:  # Recode this function
+def add_word_to_learn(word: str, story: Story, user_pk: int) -> None:
     """Adds word from story to learn """
 
     word = _delete_symbols(word)
@@ -112,7 +112,7 @@ def _date_update(count: int) -> datetime.date:
     return datetime.now().date() + timedelta(days=count)
 
 
-def _get_sentence_by_word(story, word):
+def _get_sentence_by_word(story: str, word: str) -> str:
     story += '.'
     try:
         pattern = re.compile(r"([A-Z][^.!?]*({})[^.!?]*[.!?])".format(word))
