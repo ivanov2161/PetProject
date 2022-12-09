@@ -1,3 +1,10 @@
+/*begin-commonstyles library*//*!
+ * froala_editor v4.0.6 (https://www.froala.com/wysiwyg-editor)
+ * License https://froala.com/wysiwyg-editor/terms/
+ * Copyright 2014-2021 Froala Labs
+ */
+
+
 .fr-clearfix::after {
   clear: both;
   display: block;
@@ -89,7 +96,27 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow: visible; }
-
+/*  .fr-view[dir="rtl"] blockquote {
+    border-left: none;
+    border-right: solid 2px #5E35B1;
+    margin-right: 0;
+    padding-right: 5px;
+    padding-left: 0; }
+    .fr-view[dir="rtl"] blockquote blockquote {
+      border-color: #00BCD4; }
+      .fr-view[dir="rtl"] blockquote blockquote blockquote {
+        border-color: #43A047; }
+  .fr-view blockquote {
+    border-left: solid 2px #5E35B1;
+    margin-left: 0;
+    padding-left: 5px;
+    color: #5E35B1; }
+    .fr-view blockquote blockquote {
+      border-color: #00BCD4;
+      color: #00BCD4; }
+      .fr-view blockquote blockquote blockquote {
+        border-color: #43A047;
+        color: #43A047; } */
   .fr-view span.fr-emoticon {
     font-weight: normal;
     font-family: "Apple Color Emoji","Segoe UI Emoji","NotoColorEmoji","Segoe UI Symbol","Android Emoji","EmojiSymbols";
@@ -455,9 +482,14 @@ textarea {
 optgroup {
   font-weight: 700;
 }
+
 button,
 input {
   overflow: visible;
+  color: #000
+}
+form {
+    align: center;
 }
 button,
 select {
@@ -17545,6 +17577,7 @@ blockquote .small:before {
   -webkit-backface-visibility: hidden;
   outline: none;
 }
+
 .pswp * {
   box-sizing: border-box;
 }
@@ -39216,7 +39249,7 @@ a.u-link.u-text-hover-grey-90:hover {
   display: inline-block;
 }
 
-.btn__text:hover {background: #859f94;}
+.btn__text:hover {background: #eee;}
 
 .btn_main {
     width: 100%;
@@ -39230,91 +39263,6 @@ a.u-link.u-text-hover-grey-90:hover {
   }
 }
 
-button,
-input {
-  overflow: visible;
-  color: #000
-}
-.form__see_translate {
-    display:flex;
-    justify-content: center;
-}
-
-.content_see {
-    display:flex;
-    justify-content: center;
-}
-
-.btn__see {
-  border: none;
-  background-color: inherit;
-  padding: 2px 2px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.btn__see:hover {background: #859f94;}
-
-form-input{
-    display:flex;
-    justify-content: center;
-}
-
-.u-btn_log {
-  /*display: inline-block;*/
-  display: table;
-  /*TODO maye need another solution for negative marin*/
-  cursor: pointer;
-  color: inherit;
-  font-size: inherit;
-  font-family: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  font-style: inherit;
-  font-weight: inherit;
-  text-decoration: none;
-  border: 0 none transparent;
-  outline-width: 0;
-  background-color: transparent;
-  margin: auto;
-  -webkit-text-decoration-skip: objects;
-  font-style: initial;
-  white-space: nowrap;
-  -webkit-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  vertical-align: middle;
-  text-align: center;
-  padding: 10px 30px;
-  border-radius: 0;
-  align-self: flex-start;
-}
-.u-btn_log:focus,
-.u-btn_log:active:focus,
-.u-btn_log.active:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-.u-btn_log:hover,
-.u-btn_log:focus {
-  text-decoration: none;
-}
-.u-btn_log:active,
-.u-btn_log.active {
-  outline: 0;
-  background-image: none;
-}
-.u-btn_log.disabled,
-.u-btn_log[disabled] {
-  opacity: 0.6;
-}
-
-img {
-  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-  filter: grayscale(100%);
-}
 
 
 
