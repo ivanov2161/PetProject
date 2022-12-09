@@ -138,11 +138,3 @@ def _get_sentence_by_word(story, word):
         pattern = re.compile(r"(({})[^.!?]*[.!?])\s".format(word.capitalize()))
 
         return pattern.findall(story)[0][0].replace(word.capitalize(), '*' * len(word))
-
-
-def _temp_func():
-    words = Word.objects.all()
-
-    for word in words:
-        Word.objects.filter(pk=word.pk).update(
-            wordDescription=_get_sentence_by_word(word.story.wholeText, word.wordOriginal))
