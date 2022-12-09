@@ -111,7 +111,7 @@ def _out_compliment() -> str:
 def _out_disappointment() -> str:
     """Generate disappointment for wrong answer"""
 
-    disappointment = ['WRONG', 'INCORRECT', 'MISTAKE', 'FALSE']
+    disappointment = ['WRONG', 'INCORRECT', 'MISTAKE', 'FALSE', '=(']
     return choice(disappointment)
 
 
