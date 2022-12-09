@@ -7,7 +7,7 @@ from django.views.generic import CreateView
 from .forms import RegisterUserForm, LoginUserForm, UploadStory
 from .models import Story, WordLearned
 from .utils import DataMixin
-from .services import get_words_to_learn, exam_or_see_words, add_word_to_learn, _temp_func
+from .services import get_words_to_learn, exam_or_see_words, add_word_to_learn
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -39,13 +39,13 @@ def home(request):
     users = User.objects.all()
     ranking_list = {}
 
-    for i in users:
+    for user in users:
         count = 0
-        person = WordLearned.objects.filter(learnPerson=i.pk)
-        for j in person:
-            count += j.count
-            count += j.is_learned * 100
-        ranking_list[i.username] = count
+        words = WordLearned.objects.filter(learnPerson=user.pk)
+        for word in words:
+            count += word.count
+            count += word.is_learned * 100
+        ranking_list[user.username] = count
 
     ranking_list = dict(reversed(sorted(ranking_list.items(), key=lambda item: item[1])))
 
@@ -53,7 +53,6 @@ def home(request):
 
 
 def about(request):
-    # _temp_func()
     return render(request, 'about.html')
 
 
@@ -84,7 +83,7 @@ def show_story_and_words(request, story):
             WordLearned.objects.filter(pk=request.POST.get('delete')).delete()
 
     return render(request, 'showStory.html', {'words': words, 'name_story': story.name,
-                                             'story': story.wholeText.split('\n'), 'status': status})
+                                              'story': story.wholeText.split('\n'), 'status': status})
 
 
 def show_my_words(request):
