@@ -7,17 +7,9 @@ Clone this repository
 git clone https://github.com/ivanov2161/PetProject
 ```
 
-Install Django
+Install Requirements
 ```bash
-pip install django
-```
-Install Google translator
-```bash
-pip install googletrans
-```
-Intall Pillow
-```bash
-pip install Pillow
+pip install -r requirements.txt
 ```
 
 Run the project
