@@ -3,6 +3,23 @@
 {% load static %}
 {% block link %}
 <link rel="stylesheet" href="{% static 'css/showBook.css' %}" media="screen"> {% endblock %}
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+    if (localStorage.getItem("my_app_name_here-quote-scroll") != null) {
+        $(window).scrollTop(localStorage.getItem("my_app_name_here-quote-scroll"));
+    }
+
+    $(window).on("scroll", function() {
+        localStorage.setItem("my_app_name_here-quote-scroll", $(window).scrollTop());
+    });
+
+  });
+</script>
+{% endblock %}
 {% block content %}
 
 <section class="u-clearfix u-custom-color-1 u-section-1" id="sec-5aca">
