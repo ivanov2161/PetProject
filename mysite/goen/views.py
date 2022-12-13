@@ -41,7 +41,7 @@ def home(request):
 
     for user in users:
         count = 0
-        words = WordLearned.objects.filter(learnPerson=user.pk)
+        words = WordLearned.objects.filter(learn_person=user.pk)
         for word in words:
             count += word.count
             count += word.is_learned * 100
@@ -67,8 +67,8 @@ def learning_words(request):
         out = '...'
         out_color = 'white'
         answer = {'answer': '...'}
-        word = words_list.first().learnWord
-        progress = WordLearned.objects.filter(learnWord=word, learnPerson=request.user.pk)
+        word = words_list.first().learn_word
+        progress = WordLearned.objects.filter(learn_word=word, learn_person=request.user.pk)
         display_btn_next = 'none'
 
         if request.method == 'POST':
@@ -94,7 +94,7 @@ def list_of_stories(request):
 def show_story_and_words(request, story):
     user_pk = request.user.pk
     story = Story.objects.get(pk=story)
-    words = WordLearned.objects.filter(learnPerson=user_pk).filter(learnWord__story=story).order_by('pk')
+    words = WordLearned.objects.filter(learn_person=user_pk).filter(learn_word__story=story).order_by('pk')
     status = ''
 
     if request.method == 'POST':
@@ -104,11 +104,11 @@ def show_story_and_words(request, story):
             WordLearned.objects.filter(pk=request.POST.get('delete')).delete()
 
     return render(request, 'showStory.html', {'words': words, 'name_story': story.name,
-                                              'story': story.wholeText.split('\n'), 'status': status})
+                                              'story': story.whole_text.split('\n'), 'status': status})
 
 
 def show_my_words(request):
-    words = WordLearned.objects.filter(learnPerson=request.user.pk)
+    words = WordLearned.objects.filter(learn_person=request.user.pk)
     return render(request, 'showMyWords.html', {'words': words})
 
 

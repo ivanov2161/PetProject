@@ -26,9 +26,9 @@
                 <tbody class="u-align-center u-table-body">
                 {% for item in words%}
                 <tr style="height: 75px;">
-                    <td class="u-first-column u-table-cell u-table-cell-5">{{ item.learnWord.wordOriginal}}</td>
-                    <td class="u-table-cell">{{ item.learnWord.wordTranslate}}</td>
-                    <td class="u-table-cell">{{item.nextDayLearn}}</td>
+                    <td class="u-first-column u-table-cell u-table-cell-5">{{ item.learn_word.word_original}}</td>
+                    <td class="u-table-cell">{{ item.learn_word.word_translate}}</td>
+                    <td class="u-table-cell">{{item.next_day_learn}}</td>
                     <td class="u-table-cell">
                         <progress value="{{ item.count }}" max="8"></progress>
                     </td>

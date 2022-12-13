@@ -5,8 +5,8 @@ class Story(models.Model):
     """Uploaded story"""
     objects = models.Manager()
     name = models.CharField(max_length=128)
-    wholeText = models.TextField()
-    uploadDate = models.DateTimeField(auto_now_add=True)
+    whole_text = models.TextField()
+    upload_date = models.DateTimeField(auto_now_add=True)
     cover = models.ImageField(upload_to='cover/%Y/%m/%d/', blank=True)
 
     def __str__(self):
@@ -19,13 +19,13 @@ class Story(models.Model):
 class Word(models.Model):
     """Words from story"""
     objects = models.Manager()
-    wordOriginal = models.CharField(max_length=128)
-    wordTranslate = models.CharField(max_length=128)
-    wordDescription = models.TextField()
+    word_original = models.CharField(max_length=128)
+    word_translate = models.CharField(max_length=128)
+    word_description = models.TextField()
     story = models.ForeignKey(Story, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.wordOriginal
+        return self.word_original
 
     class Meta:
         db_table = 'words'
@@ -35,10 +35,10 @@ class WordLearned(models.Model):
     """Model to link a specific user and learned words"""
     objects = models.Manager()
     count = models.IntegerField(default=0)
-    nextDayLearn = models.DateField(auto_now_add=True)
+    next_day_learn = models.DateField(auto_now_add=True)
     is_learned = models.BooleanField(default=False)
-    learnPerson = models.CharField(max_length=128)
-    learnWord = models.ForeignKey(Word, on_delete=models.CASCADE)
+    learn_person = models.CharField(max_length=128)
+    learn_word = models.ForeignKey(Word, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'wordLearned'

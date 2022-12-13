@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.forms import ModelForm
+from django.forms import ModelForm, CharField
 from .models import Story
 
 CSS_CLASS = 'form-input u-radius-6 u-border-1 u-border-grey-30 u-input u-input-rectangle'
@@ -30,9 +30,9 @@ class LoginUserForm(AuthenticationForm):
 
 class UploadStory(ModelForm):
     name = forms.CharField(label='TITLE', widget=forms.TextInput(attrs={'class': CSS_CLASS}))
-    wholeText = forms.CharField(label='Text', widget=forms.Textarea(attrs={'class': CSS_CLASS}))
+    whole_text: CharField = forms.CharField(label='Text', widget=forms.Textarea(attrs={'class': CSS_CLASS}))
     cover = forms.ImageField(label='cover', widget=forms.ClearableFileInput)
 
     class Meta:
         model = Story
-        fields = ['name', 'wholeText']
+        fields = ['name', 'whole_text']

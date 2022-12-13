@@ -45,8 +45,8 @@ $(document).ready(function () {
         <form method="post">
             {% csrf_token %}
             {% for item in words %}
-            <button class="btn__text" name="delete" value={{item.pk}}>{{item.learnWord.wordOriginal}} -
-                {{item.learnWord.wordTranslate}}
+            <button class="btn__text" name="delete" value={{item.pk}}>{{item.learn_word.word_original}} -
+                {{item.learn_word.word_translate}}
             </button>
             <br>
             {% endfor %}

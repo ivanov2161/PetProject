@@ -11,25 +11,25 @@ def add_word_to_learn(word: str, story: Story, user_pk: int) -> None:
     """Adds word from story to learn """
 
     word = _delete_symbols(word)
-    if WordLearned.objects.filter(learnPerson=user_pk,
-                                  learnWord__wordOriginal=word).count() == 0:
+    if WordLearned.objects.filter(learn_person=user_pk,
+                                  learn_word__word_original=word).count() == 0:
         translator = Translator()
-        if Word.objects.filter(wordOriginal=word).count() == 0:
+        if Word.objects.filter(word_original=word).count() == 0:
 
-            word = Word.objects.create(wordOriginal=word,
-                                       wordTranslate=translator.translate(word, dest='ru').text.lower(),
-                                       wordDescription=_get_sentence_by_word(story.wholeText, word), story=story)
+            word = Word.objects.create(word_original=word,
+                                       word_translate=translator.translate(word, dest='ru').text.lower(),
+                                       word_description=_get_sentence_by_word(story.whole_text, word), story=story)
 
         else:
-            word = Word.objects.get(wordOriginal=word)
+            word = Word.objects.get(word_original=word)
 
-        word_learned = WordLearned(learnPerson=user_pk, learnWord=word)
+        word_learned = WordLearned(learn_person=user_pk, learn_word=word)
         word_learned.save()
 
 
 def get_words_to_learn(user_pk: int) -> QuerySet:
     """Get words for study by date and repeat count"""
-    return WordLearned.objects.filter(learnPerson=user_pk, nextDayLearn__lte=datetime.now().date()).exclude(
+    return WordLearned.objects.filter(learn_person=user_pk, next_day_learn__lte=datetime.now().date()).exclude(
         is_learned=True)
 
 
@@ -42,14 +42,14 @@ def check_words(request: WSGIRequest, answer: dict, words_list: QuerySet, word: 
 
     if request.POST.get('seeTranslate') == 'seeTranslate':
         _decrease_word_count(words_list)
-        answer['answer'] = word.wordOriginal
+        answer['answer'] = word.word_original
         return out, out_color, display_btn_next
 
-    elif word.wordOriginal == request.POST['answer'].lower():
+    elif word.word_original == request.POST['answer'].lower():
         _increase_word_count(words_list)
         out = _out_compliment()
         out_color = '#7bad45'
-        answer['answer'] = word.wordOriginal
+        answer['answer'] = word.word_original
         display_btn_next = ''
         return out, out_color, display_btn_next
 
@@ -63,10 +63,10 @@ def _decrease_word_count(words_list: QuerySet) -> None:
     """Decrease word counter after right answer"""
 
     if words_list[0].count == 0:
-        WordLearned.objects.filter(pk=words_list[0].pk).update(nextDayLearn=_date_update(0))
+        WordLearned.objects.filter(pk=words_list[0].pk).update(next_day_learn=_date_update(0))
     else:
         WordLearned.objects.filter(pk=words_list[0].pk).update(count=words_list[0].count - 1,
-                                                               nextDayLearn=_date_update(0))
+                                                               next_day_learn=_date_update(0))
 
 
 def _increase_word_count(words_list: QuerySet) -> None:
@@ -74,14 +74,14 @@ def _increase_word_count(words_list: QuerySet) -> None:
 
     if words_list[0].count == 0:
         WordLearned.objects.filter(pk=words_list[0].pk).update(count=words_list[0].count + 1,
-                                                               nextDayLearn=_date_update(
+                                                               next_day_learn=_date_update(
                                                                    words_list[0].count + 1))
     elif words_list[0].count >= 7:
         WordLearned.objects.filter(pk=words_list[0].pk).update(is_learned=True)
 
     else:
         WordLearned.objects.filter(pk=words_list[0].pk).update(count=words_list[0].count + 1,
-                                                               nextDayLearn=_date_update(
+                                                               next_day_learn=_date_update(
                                                                    words_list[0].count))
 
 
