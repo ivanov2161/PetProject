@@ -7,6 +7,11 @@ Clone this repository
 git clone https://github.com/ivanov2161/PetProject
 ```
 
+Go to folder
+```bash
+cd PetProject\mysite\
+```
+
 Install Requirements
 ```bash
 pip install -r requirements.txt
