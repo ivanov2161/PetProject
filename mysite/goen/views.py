@@ -7,7 +7,8 @@ from django.views.generic import CreateView
 from .forms import RegisterUserForm, LoginUserForm, UploadStory, Answer
 from .models import Story, WordLearned
 from .utils import DataMixin
-from .services import get_words_to_learn, check_words, add_word_to_learn
+from .services import get_words_to_learn, add_word_to_learn, check_exist_words_to_learn, see_translate, right_answer, \
+    wrong_answer
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -62,28 +63,32 @@ def logout_user(request):
 
 
 def learning_words(request):
-    try:
+    dict_vars = {'answer': '...',
+                 'out': '...',
+                 'out_color': 'white',
+                 'display_btn_next': 'none',
+                 'amount_words_today': '0',
+                 'progress': '0'}
+
+    if check_exist_words_to_learn(request.user.pk):
         words_list = get_words_to_learn(request.user.pk)
-        out = '...'
-        out_color = 'white'
-        answer = {'answer': '...'}
         word = words_list.first().learn_word
-        progress = WordLearned.objects.filter(learn_word=word, learn_person=request.user.pk)
-        display_btn_next = 'none'
+        dict_vars['amount_words_today'] = words_list.count()
+        dict_vars['progress'] = words_list.first().count
 
         if request.method == 'POST':
-            out, out_color, display_btn_next = check_words(request, answer, words_list, word)
+            if request.POST.get('seeTranslate') == 'seeTranslate':
+                see_translate(dict_vars, words_list, word)
+            elif word.word_original == request.POST['answer'].lower():
+                right_answer(dict_vars, words_list, word)
+            else:
+                wrong_answer(dict_vars)
+    else:
+        word = {'word_translate': 'The words are over'}
+        dict_vars['answer'] = 'We are waiting for you tomorrow!'
 
-        return render(request, 'learningWords.html', {'inputAnswer': Answer(), 'word': word,
-                                                      'answer': answer['answer'], 'out': out, 'color': out_color,
-                                                      'progress': progress[0].count, 'amount': words_list.count(),
-                                                      'display_btn_next': display_btn_next})
-
-    except AttributeError:
-        return render(request, 'learningWords.html', {'inputAnswer': Answer(), 'word': 'The words are over',
-                                                      'answer': 'We are waiting for you tomorrow!',
-                                                      'out': '...', 'color': 'white', 'progress': '0',
-                                                      'display_btn_next': 'none'})
+    return render(request, 'learningWords.html', {'answerForm': Answer(), 'word': word,
+                                                  'dict_vars': dict_vars})
 
 
 def list_of_stories(request):
@@ -114,7 +119,6 @@ def show_my_words(request):
 
 def upload_story(request):
     if request.user.username == 'admin':
-        print(request.FILES)
         form = UploadStory(request.POST, request.FILES)
         if form.is_valid():
             form.save()

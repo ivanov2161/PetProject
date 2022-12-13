@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from django.core.handlers.wsgi import WSGIRequest
 from django.db.models import QuerySet
 from googletrans import Translator
 from goen.models import Word, WordLearned, Story
@@ -33,30 +32,28 @@ def get_words_to_learn(user_pk: int) -> QuerySet:
         is_learned=True)
 
 
-def check_words(request: WSGIRequest, answer: dict, words_list: QuerySet, word: Word) -> tuple:
-    """Function for testing learning words"""
+def check_exist_words_to_learn(user_pk: int) -> bool:
+    """Get words for study by date and repeat count"""
+    return WordLearned.objects.filter(learn_person=user_pk, next_day_learn__lte=datetime.now().date()).exclude(
+        is_learned=True).exists()
 
-    out = '...'
-    out_color = 'white'
-    display_btn_next = 'none'
 
-    if request.POST.get('seeTranslate') == 'seeTranslate':
-        _decrease_word_count(words_list)
-        answer['answer'] = word.word_original
-        return out, out_color, display_btn_next
+def see_translate(dict_var, words_list, word):
+    _decrease_word_count(words_list)
+    dict_var['answer'] = word.word_original
 
-    elif word.word_original == request.POST['answer'].lower():
-        _increase_word_count(words_list)
-        out = _out_compliment()
-        out_color = '#7bad45'
-        answer['answer'] = word.word_original
-        display_btn_next = ''
-        return out, out_color, display_btn_next
 
-    else:
-        out = _out_disappointment()
-        out_color = '#d6a445'
-        return out, out_color, display_btn_next
+def right_answer(dict_var, words_list, word):
+    _increase_word_count(words_list)
+    dict_var['out'] = _out_compliment()
+    dict_var['out_color'] = '#7bad45'
+    dict_var['answer'] = word.word_original
+    dict_var['display_btn_next'] = ''
+
+
+def wrong_answer(dict_var):
+    dict_var['out'] = _out_disappointment()
+    dict_var['out_color'] = '#d6a445'
 
 
 def _decrease_word_count(words_list: QuerySet) -> None:
