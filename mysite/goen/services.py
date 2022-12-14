@@ -17,8 +17,8 @@ def add_word_to_learn(word: str, story: Story, user_pk: int) -> None:
         word = Word.objects.get_or_create(word_original=word,
                                           word_translate=translator.translate(word, dest='ru').text.lower(),
                                           word_description=_get_sentence_by_word(story.whole_text, word), story=story)
-        word_learned = WordLearned(learn_person=user_pk, learn_word=word[0])
-        word_learned.save()
+        WordLearned.objects.create(learn_person=user_pk, learn_word=word[0])
+
 
 
 def get_words_to_learn(user_pk: int) -> QuerySet:
