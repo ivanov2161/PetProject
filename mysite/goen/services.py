@@ -111,11 +111,15 @@ def _date_update(count: int) -> datetime.date:
 
 def _get_sentence_by_word(story: str, word: str) -> str:
     story += '.'
+    sentence = 'No sentence'
     try:
         pattern = re.compile(r"([A-Z][^.!?]*({})[^.!?]*[.!?])".format(word))
-
-        return pattern.findall(story)[0][0].replace(word, '*' * len(word))
+        sentence = pattern.findall(story)[0][0].replace(word, '*' * len(word))
+        return sentence
     except IndexError:
-        pattern = re.compile(r"(({})[^.!?]*[.!?])\s".format(word.capitalize()))
-
-        return pattern.findall(story)[0][0].replace(word.capitalize(), '*' * len(word))
+        try:
+            pattern = re.compile(r"(({})[^.!?]*[^.!?])".format(word), re.IGNORECASE)
+            sentence = pattern.findall(story)[0][0].replace(word.capitalize(), '*' * len(word))
+            return sentence
+        except IndexError:
+            return sentence
