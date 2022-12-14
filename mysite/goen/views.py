@@ -69,18 +69,17 @@ def learning_words(request):
                  'display_btn_next': 'none',
                  'amount_words_today': '0',
                  'progress': '0'}
-
     if check_exist_words_to_learn(request.user.pk):
         words_list = get_words_to_learn(request.user.pk)
         word = words_list.first().learn_word
         dict_vars['amount_words_today'] = words_list.count()
-        dict_vars['progress'] = words_list.first().count
+        dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=request.user.pk).count
 
         if request.method == 'POST':
             if request.POST.get('seeTranslate') == 'seeTranslate':
-                see_translate(dict_vars, words_list, word)
+                see_translate(dict_vars, words_list, word, request.user.pk)
             elif word.word_original == request.POST['answer'].lower():
-                right_answer(dict_vars, words_list, word)
+                right_answer(dict_vars, words_list, word, request.user.pk)
             else:
                 wrong_answer(dict_vars)
     else:
