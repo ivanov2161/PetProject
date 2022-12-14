@@ -10,19 +10,14 @@ def add_word_to_learn(word: str, story: Story, user_pk: int) -> None:
     """Adds word from story to learn """
 
     word = _delete_symbols(word)
-    if WordLearned.objects.filter(learn_person=user_pk,
-                                  learn_word__word_original=word).count() == 0:
+
+    if not WordLearned.objects.filter(learn_person=user_pk,
+                                      learn_word__word_original=word).exists():
         translator = Translator()
-        if Word.objects.filter(word_original=word).count() == 0:
-
-            word = Word.objects.create(word_original=word,
-                                       word_translate=translator.translate(word, dest='ru').text.lower(),
-                                       word_description=_get_sentence_by_word(story.whole_text, word), story=story)
-
-        else:
-            word = Word.objects.get(word_original=word)
-
-        word_learned = WordLearned(learn_person=user_pk, learn_word=word)
+        word = Word.objects.get_or_create(word_original=word,
+                                          word_translate=translator.translate(word, dest='ru').text.lower(),
+                                          word_description=_get_sentence_by_word(story.whole_text, word), story=story)
+        word_learned = WordLearned(learn_person=user_pk, learn_word=word[0])
         word_learned.save()
 
 
@@ -38,48 +33,50 @@ def check_exist_words_to_learn(user_pk: int) -> bool:
         is_learned=True).exists()
 
 
-def see_translate(dict_var, words_list, word):
-    _decrease_word_count(words_list)
-    dict_var['answer'] = word.word_original
+def see_translate(dict_vars, words_list, word, user_pk):
+    _decrease_word_count(words_list.first())
+    dict_vars['answer'] = word.word_original
+    dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=user_pk).count
 
 
-def right_answer(dict_var, words_list, word):
-    _increase_word_count(words_list)
-    dict_var['out'] = _out_compliment()
-    dict_var['out_color'] = '#7bad45'
-    dict_var['answer'] = word.word_original
-    dict_var['display_btn_next'] = ''
+def right_answer(dict_vars, words_list, word, user_pk):
+    _increase_word_count(words_list.first())
+    dict_vars['out'] = _out_compliment()
+    dict_vars['out_color'] = '#7bad45'
+    dict_vars['answer'] = word.word_original
+    dict_vars['display_btn_next'] = ''
+    dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=user_pk).count
 
 
-def wrong_answer(dict_var):
-    dict_var['out'] = _out_disappointment()
-    dict_var['out_color'] = '#d6a445'
+def wrong_answer(dict_vars):
+    dict_vars['out'] = _out_disappointment()
+    dict_vars['out_color'] = '#d6a445'
 
 
-def _decrease_word_count(words_list: QuerySet) -> None:
+def _decrease_word_count(word_learned: WordLearned) -> None:
     """Decrease word counter after right answer"""
 
-    if words_list[0].count == 0:
-        WordLearned.objects.filter(pk=words_list[0].pk).update(next_day_learn=_date_update(0))
+    if word_learned.count == 0:
+        WordLearned.objects.filter(pk=word_learned.pk).update(next_day_learn=_date_update(0))
     else:
-        WordLearned.objects.filter(pk=words_list[0].pk).update(count=words_list[0].count - 1,
-                                                               next_day_learn=_date_update(0))
+        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.count - 1,
+                                                              next_day_learn=_date_update(0))
 
 
-def _increase_word_count(words_list: QuerySet) -> None:
+def _increase_word_count(word_learned: WordLearned) -> None:
     """Increase word counter after right answer"""
 
-    if words_list[0].count == 0:
-        WordLearned.objects.filter(pk=words_list[0].pk).update(count=words_list[0].count + 1,
-                                                               next_day_learn=_date_update(
-                                                                   words_list[0].count + 1))
-    elif words_list[0].count >= 7:
-        WordLearned.objects.filter(pk=words_list[0].pk).update(is_learned=True)
+    if word_learned.count == 0:
+        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.count + 1,
+                                                              next_day_learn=_date_update(
+                                                                  word_learned.count + 1))
+    elif word_learned.count >= 7:
+        WordLearned.objects.filter(pk=word_learned.pk).update(is_learned=True)
 
     else:
-        WordLearned.objects.filter(pk=words_list[0].pk).update(count=words_list[0].count + 1,
-                                                               next_day_learn=_date_update(
-                                                                   words_list[0].count))
+        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.count + 1,
+                                                              next_day_learn=_date_update(
+                                                                  word_learned.count))
 
 
 def _out_compliment() -> str:
