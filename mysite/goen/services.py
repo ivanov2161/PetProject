@@ -36,7 +36,7 @@ def check_exist_words_to_learn(user_pk: int) -> bool:
 def see_translate(dict_vars, words_list, word, user_pk):
     _decrease_word_count(words_list.first())
     dict_vars['answer'] = word.word_original
-    dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=user_pk).count
+    dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=user_pk).progress
 
 
 def right_answer(dict_vars, words_list, word, user_pk):
@@ -45,7 +45,7 @@ def right_answer(dict_vars, words_list, word, user_pk):
     dict_vars['out_color'] = '#7bad45'
     dict_vars['answer'] = word.word_original
     dict_vars['display_btn_next'] = ''
-    dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=user_pk).count
+    dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=user_pk).progress
 
 
 def wrong_answer(dict_vars):
@@ -56,27 +56,27 @@ def wrong_answer(dict_vars):
 def _decrease_word_count(word_learned: WordLearned) -> None:
     """Decrease word counter after right answer"""
 
-    if word_learned.count == 0:
+    if word_learned.progress == 0:
         WordLearned.objects.filter(pk=word_learned.pk).update(next_day_learn=_date_update(0))
     else:
-        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.count - 1,
+        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.progress - 1,
                                                               next_day_learn=_date_update(0))
 
 
 def _increase_word_count(word_learned: WordLearned) -> None:
     """Increase word counter after right answer"""
 
-    if word_learned.count == 0:
-        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.count + 1,
+    if word_learned.progress == 0:
+        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
-                                                                  word_learned.count + 1))
-    elif word_learned.count >= 7:
+                                                                  word_learned.progress + 1))
+    elif word_learned.progress >= 7:
         WordLearned.objects.filter(pk=word_learned.pk).update(is_learned=True)
 
     else:
-        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.count + 1,
+        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
-                                                                  word_learned.count))
+                                                                  word_learned.progress))
 
 
 def _out_compliment() -> str:

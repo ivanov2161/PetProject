@@ -44,7 +44,7 @@ def home(request):
         count = 0
         words = WordLearned.objects.filter(learn_person=user.pk)
         for word in words:
-            count += word.count
+            count += word.progress
             count += word.is_learned * 100
         ranking_list[user.username] = count
 
@@ -73,7 +73,7 @@ def learning_words(request):
         words_list = get_words_to_learn(request.user.pk)
         word = words_list.first().learn_word
         dict_vars['amount_words_today'] = words_list.count()
-        dict_vars['progress'] = words_list.first().count
+        dict_vars['progress'] = words_list.first().progress
 
 
         if request.method == 'POST':

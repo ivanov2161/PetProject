@@ -34,7 +34,7 @@ class Word(models.Model):
 class WordLearned(models.Model):
     """Model to link a specific user and learned words"""
     objects = models.Manager()
-    count = models.IntegerField(default=0)
+    progress = models.IntegerField(default=0)
     next_day_learn = models.DateField(auto_now_add=True)
     is_learned = models.BooleanField(default=False)
     learn_person = models.CharField(max_length=128)
