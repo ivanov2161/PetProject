@@ -72,7 +72,6 @@ def learning_words(request):
     if check_exist_words_to_learn(request.user.pk):
         words_list = get_words_to_learn(request.user.pk)
         word = words_list.first().learn_word
-        print(word)
         dict_vars['amount_words_today'] = words_list.count()
         dict_vars['progress'] = words_list.first().count
 
