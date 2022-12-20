@@ -35,4 +35,4 @@ class UploadStory(ModelForm):
 
     class Meta:
         model = Story
-        fields = ['name', 'whole_text']
+        fields = ['name', 'whole_text', 'cover']

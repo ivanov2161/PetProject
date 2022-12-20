@@ -75,7 +75,6 @@ def learning_words(request):
         dict_vars['amount_words_today'] = words_list.count()
         dict_vars['progress'] = words_list.first().progress
 
-
         if request.method == 'POST':
             if request.POST.get('seeTranslate') == 'seeTranslate':
                 see_translate(dict_vars, words_list, word, request.user.pk)
@@ -119,10 +118,13 @@ def show_my_words(request):
 
 def upload_story(request):
     if request.user.username == 'admin':
-        form = UploadStory(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
+        if request.method == 'POST':
+            form = UploadStory(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('/')
+            else:
+                form = UploadStory()
         else:
             form = UploadStory()
         return render(request, 'uploadStory.html', {'form': form})

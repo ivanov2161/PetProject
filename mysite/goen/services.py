@@ -20,7 +20,6 @@ def add_word_to_learn(word: str, story: Story, user_pk: int) -> None:
         WordLearned.objects.create(learn_person=user_pk, learn_word=word[0])
 
 
-
 def get_words_to_learn(user_pk: int) -> QuerySet:
     """Get words for study by date and repeat count"""
     return WordLearned.objects.filter(learn_person=user_pk, next_day_learn__lte=datetime.now().date()).exclude(
