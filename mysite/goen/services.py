@@ -58,7 +58,7 @@ def _decrease_word_count(word_learned: WordLearned) -> None:
     if word_learned.progress == 0:
         WordLearned.objects.filter(pk=word_learned.pk).update(next_day_learn=_date_update(0))
     else:
-        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.progress - 1,
+        WordLearned.objects.filter(pk=word_learned.pk).update(progress=word_learned.progress - 1,
                                                               next_day_learn=_date_update(0))
 
 
@@ -66,14 +66,14 @@ def _increase_word_count(word_learned: WordLearned) -> None:
     """Increase word counter after right answer"""
 
     if word_learned.progress == 0:
-        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.progress + 1,
+        WordLearned.objects.filter(pk=word_learned.pk).update(progress=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
                                                                   word_learned.progress + 1))
     elif word_learned.progress >= 7:
         WordLearned.objects.filter(pk=word_learned.pk).update(is_learned=True)
 
     else:
-        WordLearned.objects.filter(pk=word_learned.pk).update(count=word_learned.progress + 1,
+        WordLearned.objects.filter(pk=word_learned.pk).update(progress=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
                                                                   word_learned.progress))
 
