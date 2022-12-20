@@ -63,23 +63,24 @@ def logout_user(request):
 
 
 def learning_words(request):
+    user_id = request.user.pk
     dict_vars = {'answer': '...',
                  'out': '...',
                  'out_color': 'white',
                  'display_btn_next': 'none',
                  'amount_words_today': '0',
                  'progress': '0'}
-    if check_exist_words_to_learn(request.user.pk):
-        words_list = get_words_to_learn(request.user.pk)
+    if check_exist_words_to_learn(user_id):
+        words_list = get_words_to_learn(user_id)
         word = words_list.first().learn_word
         dict_vars['amount_words_today'] = words_list.count()
         dict_vars['progress'] = words_list.first().progress
 
         if request.method == 'POST':
             if request.POST.get('seeTranslate') == 'seeTranslate':
-                see_translate(dict_vars, words_list, word, request.user.pk)
+                see_translate(dict_vars, words_list, word, user_id)
             elif word.word_original == request.POST['answer'].lower():
-                right_answer(dict_vars, words_list, word, request.user.pk)
+                right_answer(dict_vars, words_list, word, user_id)
             else:
                 wrong_answer(dict_vars)
     else:
