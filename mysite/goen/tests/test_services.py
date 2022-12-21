@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from goen.models import Story, WordLearned, Word
 from django.test import TestCase
 from goen.services import _delete_symbols, add_word_to_learn, get_words_to_learn, check_exist_words_to_learn, \
-    see_translate, _increase_word_count
+    see_translate
 
 
 class AddWordToLearnTestCase(TestCase):
