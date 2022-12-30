@@ -6,6 +6,26 @@ from random import choice
 import re
 
 
+def get_ranking_list(users):
+    """Render ranking list for Home table """
+    ranking_list = {}
+    for user in users:
+        count = 0
+        words = WordLearned.objects.filter(learn_person=user.pk)
+        amount_learning_words = WordLearned.objects.filter(learn_person=user.pk).filter(is_learned=False).count()
+        amount_learned_words = WordLearned.objects.filter(learn_person=user.pk).filter(is_learned=True).count()
+
+        for word in words:
+            count += word.progress
+            count += word.is_learned * 100
+
+        ranking_list[user.username + '_points'] = count
+        ranking_list[user.username + '_amount_learning_words'] = amount_learning_words
+        ranking_list[user.username + '_amount_learned_words'] = amount_learned_words
+
+    return ranking_list
+
+
 def add_word_to_learn(word: str, story: Story, user_pk: int) -> None:
     """Adds word from story to learn """
 

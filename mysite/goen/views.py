@@ -8,7 +8,7 @@ from .forms import RegisterUserForm, LoginUserForm, UploadStory, Answer
 from .models import Story, WordLearned
 from .utils import DataMixin
 from .services import get_words_to_learn, add_word_to_learn, check_exist_words_to_learn, see_translate, right_answer, \
-    wrong_answer
+    wrong_answer, get_ranking_list
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -38,19 +38,8 @@ class LoginUser(DataMixin, LoginView):
 def home(request):
     amount = get_words_to_learn(request.user.pk).count()
     users = User.objects.all()
-    ranking_list = {}
+    ranking_list = get_ranking_list(users)
 
-    for user in users:
-        count = 0
-        words = WordLearned.objects.filter(learn_person=user.pk)
-        for word in words:
-            count += word.progress
-            count += word.is_learned * 100
-        ranking_list[user.username + '_points'] = count
-        ranking_list[user.username + '_amount_learning_words'] = WordLearned.objects.filter(
-            learn_person=user.pk).filter(is_learned=False).count()
-        ranking_list[user.username + '_amount_learned_words'] = WordLearned.objects.filter(
-            learn_person=user.pk).filter(is_learned=True).count()
     return render(request, 'home.html',
                   {'amount': amount, 'ranking_list': ranking_list, 'users': users})
 
