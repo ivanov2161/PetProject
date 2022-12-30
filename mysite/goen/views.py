@@ -46,11 +46,13 @@ def home(request):
         for word in words:
             count += word.progress
             count += word.is_learned * 100
-        ranking_list[user.username] = count
-
-    ranking_list = dict(reversed(sorted(ranking_list.items(), key=lambda item: item[1])))
-
-    return render(request, 'home.html', {'amount': amount, 'ranking_list': ranking_list})
+        ranking_list[user.username + '_points'] = count
+        ranking_list[user.username + '_amount_learning_words'] = WordLearned.objects.filter(
+            learn_person=user.pk).filter(is_learned=False).count()
+        ranking_list[user.username + '_amount_learned_words'] = WordLearned.objects.filter(
+            learn_person=user.pk).filter(is_learned=True).count()
+    return render(request, 'home.html',
+                  {'amount': amount, 'ranking_list': ranking_list, 'users': users})
 
 
 def about(request):
