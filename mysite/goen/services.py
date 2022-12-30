@@ -69,13 +69,12 @@ def _increase_word_count(word_learned: WordLearned) -> None:
         WordLearned.objects.filter(pk=word_learned.pk).update(progress=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
                                                                   word_learned.progress + 1))
-    elif word_learned.progress >= 7:
-        WordLearned.objects.filter(pk=word_learned.pk).update(is_learned=True)
-
     else:
         WordLearned.objects.filter(pk=word_learned.pk).update(progress=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
                                                                   word_learned.progress))
+    if word_learned.progress >= 7:
+        WordLearned.objects.filter(pk=word_learned.pk).update(is_learned=True)
 
 
 def _out_compliment() -> str:
