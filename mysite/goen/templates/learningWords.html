@@ -11,7 +11,7 @@
         <h1 class="u-text u-text-default u-text-2">{{ word.word_translate }}</h1>
         <div class="u-align-center-lg u-align-center-md u-align-center-sm u-align-center-xl u-form u-form-1">
             <div class="content_see">
-                <progress value="{{ dict_vars.progress }}" max="8"></progress>
+                <progress value="{{ dict_vars.progress }}" max="7"></progress>
             </div>
             <form method="post" autocomplete="off">
                 {% csrf_token %}
@@ -52,6 +52,5 @@
 
 
 </section>
-
 
 {% endblock %}

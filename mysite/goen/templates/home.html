@@ -2,6 +2,7 @@
 {% block title %} GoEn {% endblock %}
 {% block content %}
 {% load static %}
+{% load custom_filters %}
 
 <section class="u-clearfix u-custom-color-1 u-section-1" id="sec-9b5a">
     <div class="u-clearfix u-sheet u-sheet-1">
@@ -12,7 +13,8 @@
                         <div class="u-container-layout u-container-layout-1">
                             <h2 class="u-align-center u-text u-text-default u-text-1"> Learn English by short Stories&nbsp;</h2>
                             <h1 class="u-align-center u-text u-text-default u-text-2"> WELCOME TO GOEN</h1>
-                            <h2 class="u-align-center u-text u-text-default u-text-3" style="color:#D3927D;"> Today {{amount}} words to learn </h2>
+                            <h2 class="u-align-center u-text u-text-default u-text-3" style="color:#D3927D;"> Today
+                                {{amount}} words to learn </h2>
                         </div>
                     </div>
                     <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
@@ -30,7 +32,8 @@
                                 TO LEARN</a>
                             {% else %}
                             <a href="/login/"
-                               class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-4 u-radius-6 u-btn-1">-- START LEARNING --</a>
+                               class="u-border-none u-btn u-btn-round u-button-style u-custom-color-3 u-hover-custom-color-4 u-radius-6 u-btn-1">--
+                                START LEARNING --</a>
                             {% endif %}
                         </div>
                     </div>
@@ -52,18 +55,29 @@
                     <col width="50%">
                 </colgroup>
                 <thead class="u-align-center u-palette-4-base u-table-header u-table-header-1">
-                <tr style="height: 27px;">
+                <tr>
                     <th class="u-border-1 u-border-grey-30 u-custom-color-4 u-table-cell u-table-cell-1">User</th>
                     <th class="u-border-1 u-border-grey-30 u-custom-color-4 u-table-cell u-table-cell-2">Points</th>
+                    <th class="u-border-1 u-border-grey-30 u-custom-color-4 u-table-cell u-table-cell-2">Learning
+                        words
+                    </th>
+                    <th class="u-border-1 u-border-grey-30 u-custom-color-4 u-table-cell u-table-cell-2">Learned words
+                    </th>
                 </tr>
                 </thead>
                 <tbody class="u-align-center u-custom-font u-table-body u-text-font u-table-body-1">
-                {% for i, j in ranking_list.items%}
+                {% for user in users%}
                 <tr style="height: 75px;">
                     <td class="u-border-1 u-border-grey-30 u-custom-color-5 u-first-column u-table-cell u-table-cell-3">
-                        {{i}}
+                        {{user}}
                     </td>
-                    <td class="u-border-1 u-border-grey-30 u-table-cell">{{j}}</td>
+                    <td class="u-border-1 u-border-grey-30 u-table-cell">{{ranking_list|get_points:user}}</td>
+                    <td class="u-border-1 u-border-grey-30 u-table-cell">
+                        {{ranking_list|get_amount_learning_words:user}}
+                    </td>
+                    <td class="u-border-1 u-border-grey-30 u-table-cell">
+                        {{ranking_list|get_amount_learned_words:user}}
+                    </td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -72,8 +86,6 @@
 
     </div>
 </section>
-
-
 
 
 {% endblock %}
