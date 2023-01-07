@@ -1,153 +1,30 @@
 <!DOCTYPE html>
-<html style="font-size: 16px;" lang="en">
+<html lang="en">
 <head>
     {% load static %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <meta name="keywords" content="​Learn English by short Stories, ​WELCOME TO GOEN, USER">
-    <meta name="description" content="">
-    <title>{% block title %} GoEn {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" media="screen">
-    {% block link %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}" media="screen">
-    {% endblock %}
-    <link rel="icon" href="{% static 'images/logos/logo_goen.png' %}" type="image/icon type">
-    <script class="u-script" type="text/javascript" src="{% static 'js/jquery.js' %}" defer=""></script>
-    <script class="u-script" type="text/javascript" src="{% static 'js/nicepage.js' %}" defer=""></script>
-    <meta name="generator" content="Nicepage 5.0.7, nicepage.com">
-    <link id="u-theme-google-font" rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
-    <meta property="og:title" content="Home">
-    <meta property="og:type" content="website">
+    <meta charset="utf-8">
+    <title>{% block title %} GoEn {% endblock %}</title>
     {% block head %} {% endblock %}
 </head>
-<body class="u-body u-xl-mode" data-lang="ru">
-
-<header class="u-clearfix u-custom-color-4 u-header u-header" id="sec-43fb">
-    <div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-text u-text-default u-text-1">
-            <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-body-color u-btn-1"
-               href="/">GoEn</a>
-        </p>
-        <nav class="u-menu u-menu-one-level u-offcanvas u-menu-1">
-            <div class="menu-collapse" style="font-size: 1rem; letter-spacing: 0px; font-weight: 700;">
-                <a class="u-button-style u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-text-color u-custom-text-hover-color u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base"
-                   href="#">
-                    <svg class="u-svg-link" viewBox="0 0 24 24">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu-hamburger"></use>
-                    </svg>
-                    <svg class="u-svg-content" version="1.1" id="menu-hamburger" viewBox="0 0 16 16" x="0px" y="0px"
-                         xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <rect y="1" width="16" height="2"></rect>
-                            <rect y="7" width="16" height="2"></rect>
-                            <rect y="13" width="16" height="2"></rect>
-                        </g>
-                    </svg>
-                </a>
-            </div>
-
-            <div class="u-custom-menu u-nav-container">
-                <ul class="u-nav u-unstyled u-nav-1">
-                    {% if request.user.is_authenticated %}
-                    <li class="u-nav-item"><s
-                            class="u-button-style u-nav-link u-text-active-palette-1-base u-text-body-color u-text-hover-custom-color-3"
-                            style="padding: 10px 20px;">{{user.username}}</s>
-                    </li>
-                    <li class="u-nav-item"><a
-                            class="u-button-style u-nav-link u-text-active-palette-1-base u-text-body-color u-text-hover-custom-color-3"
-                            href="/logout" style="padding: 10px 20px;">Exit</a>
-                    </li>
-                    {% else %}
-                    <li class="u-nav-item"><a
-                            class="u-button-style u-nav-link u-text-active-palette-1-base u-text-body-color u-text-hover-custom-color-3"
-                            href="/login" style="padding: 10px 20px;">Sign In</a>
-                    </li>
-                    <li class="u-nav-item"><a
-                            class="u-button-style u-nav-link u-text-active-palette-1-base u-text-body-color u-text-hover-custom-color-3"
-                            href="/register" style="padding: 10px 20px;">Sign Up</a>
-                    </li>
-                    {% endif %}
-                    {% if user.username == 'admin' %}
-                    <li class="u-nav-item"><a
-                            class="u-button-style u-nav-link u-text-active-palette-1-base u-text-body-color u-text-hover-custom-color-3"
-                            href="/uploadStory" style="padding: 10px 20px;">Upload Story</a>
-                    </li>
-                    {% endif %}
-                    <li class="u-nav-item"><a
-                            class="u-button-style u-nav-link u-text-active-palette-1-base u-text-body-color u-text-hover-custom-color-3"
-                            href="/about" style="padding: 10px 20px;">About</a>
-                    </li>
-                </ul>
-            </div>
-            <!--            Hamburger-->
-            <div class="u-custom-menu u-nav-container-collapse">
-                <div class="u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
-                    <div class="u-inner-container-layout u-sidenav-overflow">
-                        <div class="u-menu-close"></div>
-                        <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2">
-                            {% if request.user.is_authenticated %}
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/">Home</a>
-                            </li>
-                            <br>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/listOfStories">Watch all
-                                stories</a>
-                            </li>
-                            <br>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/showMyWords">Show my
-                                words</a>
-                            </li>
-                            <br>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/learningWords">Go to
-                                learn</a>
-                            </li>
-                            <br><br><br>
-                            <li class="u-nav-item"><s class="u-button-style u-nav-link">{{user.username}}</s>
-                            </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/logout">Exit</a>
-                            </li>
-                            {% else %}
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/login">Sign In</a>
-                            </li>
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/register">Sign Up</a>
-                            </li>
-                            {% endif %}
-                            {% if user.username == 'admin' %}
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/uploadStory">Upload
-                                Story</a>
-                            </li>
-                            {% endif %}
-                            <li class="u-nav-item"><a class="u-button-style u-nav-link" href="/about">About</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
-            </div>
-        </nav>
-    </div>
-</header>
+<body>
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        {% if request.user.is_authenticated %}
+        <li><a>{{user.username}}</a></li>
+        <li><a href="/logout/">Exit</a></li>
+        {% else %}
+        <li><a href="/login/">Sign In</a></li>
+        <li><a href="/register/">Sign Up</a></li>
+        {% endif %}
+        <li><a href="/about/">About</a></li>
+    </ul>
+</nav>
 
 {% block content %} {% endblock %}
 
-<footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-752c">
-    <div class="u-clearfix u-sheet u-sheet-1">
-        <section class="u-backlink u-clearfix u-grey-80">
-            <p>It's a Pet-project. Please read <a href="/about">about</a></p>
-        </section>
-    </div>
+<footer>
+    <p>It's a Pet-project. Please read <a class="link" href="/about/">about</a></p>
 </footer>
-
-<!--<section class="u-backlink u-clearfix u-grey-80">-->
-<!--    <a class="u-link" href="https://nicepage.com/html-templates" target="_blank">-->
-<!--        <span>HTML Website Templates</span>-->
-<!--    </a>-->
-<!--    <p class="u-text">-->
-<!--        <span>created with</span>-->
-<!--    </p>-->
-<!--    <a class="u-link" href="https://nicepage.cloud" target="_blank">-->
-<!--        <span>Best Free Website Builder</span>-->
-<!--    </a>.-->
-<!--</section>-->
 </body>
-</html>

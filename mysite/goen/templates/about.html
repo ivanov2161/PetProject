@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% block title %} About {% endblock %}
-{% load static %}
-{% block link %}
-<link rel="stylesheet" href="{% static 'css/about.css' %}" media="screen"> {% endblock %}
 {% block content %}
+{% load static %}
 
-<section class="u-clearfix u-custom-color-1 u-section-1" id="sec-5709">
-    <div class="u-clearfix u-sheet u-sheet-1">
+    <div class="container">
+
         <h3>This is a site for study English words by short stories</h3>
         <h4>Start learning</h4>
         <p>1. After registration, go to the stories section and add the unknown words.
@@ -25,7 +23,8 @@
         </p>
 
         <p>Site created by framework Django</p>
-    </div>
-</section>
 
+    </div>
+    
+    <div id="text-container"></div>
 {% endblock %}
