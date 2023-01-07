@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
 {% block title %} Show Story {% endblock %}
-{% load static %}
-{% block link %}
-<link rel="stylesheet" href="{% static 'css/showBook.css' %}" media="screen"> {% endblock %}
 {% block head %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -18,41 +15,41 @@ $(document).ready(function () {
     });
 
   });
+
 </script>
 {% endblock %}
 {% block content %}
 
-<section class="u-clearfix u-custom-color-1 u-section-1" id="sec-5aca">
-    <div class="u-clearfix u-sheet u-sheet-1">
-        <h1 class="u-text u-text-default u-text-1">{{name_story}}</h1>
-        <h3 class="u-text u-text-default u-text-2"> Click on word to add</h3>
+<div class="container">
 
-        <form method="post">
-            {% csrf_token %}
-            {% for item in story %}
-            <p class="p__book">
-                {% for word in item.split %}
-                <button class="btn__text" name="add" value={{word}}>{{ word }}</button>
-                {% endfor %}
-            </p>
+    <h1>{{name_story}}</h1>
+    <h3> Click on word to add</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for item in story %}
+        <p class="show-story">
+            {% for word in item.split %}
+            <button class="btn-text" name="add" value={{word}}>{{ word }}</button>
             {% endfor %}
-        </form>
-
-        <h1 class="u-text u-text-default u-text-4">Added words to learn</h1>
-        <h3 class="u-text u-text-default u-text-5">Click on word to delete</h3>
-        <p class="u-text u-text-default u-text-6">
-
-        <form method="post">
-            {% csrf_token %}
-            {% for item in words %}
-            <button class="btn__text" name="delete" value={{item.pk}}>{{item.learn_word.word_original}} -
-                {{item.learn_word.word_translate}}
-            </button>
-            <br>
-            {% endfor %}
-        </form>
         </p>
-    </div>
-</section>
+        {% endfor %}
+    </form>
+
+    <h1>Added words to learn</h1>
+    <h3>Click on word to delete</h3>
+
+    <p class="show-story">
+    <form method="post">
+        {% csrf_token %}
+        {% for item in words %}
+        <button class="btn-text" name="delete" value={{item.pk}}>{{item.learn_word.word_original}} -
+            {{item.learn_word.word_translate}}
+        </button>
+        <br>
+        {% endfor %}
+    </form>
+    </p>
+</div>
 
 {% endblock %}

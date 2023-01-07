@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, CharField
 from .models import Story
 
-CSS_CLASS = 'form-input u-radius-6 u-border-1 u-border-grey-30 u-input u-input-rectangle'
+CSS_CLASS = 'input-answer'
 
 
 class Answer(forms.Form):

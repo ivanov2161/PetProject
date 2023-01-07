@@ -1,44 +1,46 @@
 {% extends 'base.html' %}
 {% block title %} Show My Words {% endblock %}
-{% load static %}
-{% block link %}
-<link rel="stylesheet" href="{% static 'css/showMyWords.css' %}" media="screen"> {% endblock %}
 {% block content %}
+{% load custom_filters %}
 
-<section class="u-align-center u-clearfix u-custom-color-1 u-section-1" id="sec-dc89">
-    <div class="u-clearfix u-sheet u-sheet-1">
-        <div class="u-expanded-width u-table u-table-responsive u-table-1">
-            <table class="u-table-entity u-table-entity-1">
-                <colgroup>
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
-                    <col width="25%">
-                </colgroup>
-                <thead class="u-align-center u-table-header u-table-header-1">
-                <tr style="height: 21px;">
-                    <th class="u-table-cell">Word</th>
-                    <th class="u-table-cell">Translate</th>
-                    <th class="u-table-cell">Next day to learn</th>
-                    <th class="u-table-cell">Progress</th>
-                </tr>
-                </thead>
-                <tbody class="u-align-center u-table-body">
-                {% for item in words%}
-                <tr style="height: 75px;">
-                    <td class="u-first-column u-table-cell u-table-cell-5">{{ item.learn_word.word_original}}</td>
-                    <td class="u-table-cell">{{ item.learn_word.word_translate}}</td>
-                    <td class="u-table-cell">{{item.next_day_learn}}</td>
-                    <td class="u-table-cell">
-                        <progress value="{{ item.progress }}" max="7"></progress>
-                    </td>
-                </tr>
-                {% endfor %}
+<div class="container">
 
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
+    <h2 class="center-text">MY WORDS</h2>
 
-{% endblock %}
+    <table class="table-home">
+        <tr class="table-home-tr">
+            <th class="table-home-th">
+                Word
+            </th>
+            <th class="table-home-th">
+                Translate
+            </th>
+            <th class="table-home-th">
+                Next learn date
+            </th>
+            <th class="table-home-th">
+                Progress
+            </th>
+        </tr>
+        {% for item in words%}
+        <tr>
+            <td class="table-home-td">
+                {{ item.learn_word.word_original}}
+            </td>
+            <td class="table-home-td">
+                {{ item.learn_word.word_translate}}
+            </td>
+            <td class="table-home-td">
+                {{item.next_day_learn}}
+            </td>
+            <td class="table-home-td">
+                <div class="progress-bar table">
+                    <div class="progress-value table" style="width: {{item.progress|multiply:14.2857142}}%;"></div>
+                </div>
+            </td>
+
+        </tr>
+        {% endfor %}
+        </table>
+</div>
+        {% endblock %}
