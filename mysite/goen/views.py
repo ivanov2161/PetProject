@@ -4,11 +4,12 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+
 from .forms import RegisterUserForm, LoginUserForm, UploadStory, Answer
 from .models import Story, WordLearned
 from .utils import DataMixin
 from .services import get_words_to_learn, add_word_to_learn, check_exist_words_to_learn, see_translate, right_answer, \
-    wrong_answer, get_ranking_list
+    wrong_answer, get_ranking_list, send_remind_to_learn
 
 
 class RegisterUser(DataMixin, CreateView):
@@ -57,10 +58,10 @@ def learning_words(request):
     user_id = request.user.pk
     dict_vars = {'answer': '...',
                  'out': '...',
-                 'out_color': 'white',
+                 'out_color': '#6F727C',
                  'display_btn_next': 'none',
                  'amount_words_today': '0',
-                 'progress': '0'}
+                 'progress': 0}
     if check_exist_words_to_learn(user_id):
         words_list = get_words_to_learn(user_id)
         word = words_list.first().learn_word
@@ -73,7 +74,7 @@ def learning_words(request):
             elif word.word_original == request.POST['answer'].lower():
                 right_answer(dict_vars, words_list, word, user_id)
             else:
-                wrong_answer(dict_vars)
+                wrong_answer(dict_vars, words_list)
     else:
         word = {'word_translate': 'The words are over'}
         dict_vars['answer'] = 'We are waiting for you tomorrow!'
@@ -120,5 +121,15 @@ def upload_story(request):
         else:
             form = UploadStory()
         return render(request, 'uploadStory.html', {'form': form})
+    else:
+        return render(request, 'home.html')
+
+
+def reminder(request):
+    if request.user.username == 'admin':
+        users = User.objects.all()
+        send_remind_to_learn(users)
+
+        return render(request, 'home.html')
     else:
         return render(request, 'home.html')

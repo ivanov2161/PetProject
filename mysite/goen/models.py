@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -39,6 +40,12 @@ class WordLearned(models.Model):
     is_learned = models.BooleanField(default=False)
     learn_person = models.CharField(max_length=128)
     learn_word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    to_repeat = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'wordLearned'
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    show_me_in_ranking = models.BooleanField(default=True)

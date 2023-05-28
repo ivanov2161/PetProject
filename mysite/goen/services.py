@@ -1,9 +1,13 @@
+import re
 from datetime import datetime, timedelta
+from random import choice
+
 from django.db.models import QuerySet
 from googletrans import Translator
+from django.core.files.storage import default_storage
+
 from goen.models import Word, WordLearned, Story
-from random import choice
-import re
+from .tasks import send_email
 
 
 def get_ranking_list(users):
@@ -59,7 +63,10 @@ def see_translate(dict_vars, words_list, word, user_pk):
 
 
 def right_answer(dict_vars, words_list, word, user_pk):
-    _increase_word_count(words_list.first())
+    if not words_list.first().to_repeat:
+        _increase_word_count(words_list.first())
+
+    WordLearned.objects.filter(pk=words_list.first().pk).update(to_repeat=False)
     dict_vars['out'] = _out_compliment()
     dict_vars['out_color'] = '#7bad45'
     dict_vars['answer'] = word.word_original
@@ -67,9 +74,31 @@ def right_answer(dict_vars, words_list, word, user_pk):
     dict_vars['progress'] = WordLearned.objects.get(learn_word=word, learn_person=user_pk).progress
 
 
-def wrong_answer(dict_vars):
+def wrong_answer(dict_vars, words_list):
     dict_vars['out'] = _out_disappointment()
     dict_vars['out_color'] = '#d6a445'
+    WordLearned.objects.filter(pk=words_list.first().pk).update(to_repeat=True)
+
+
+def send_remind_to_learn(users):
+    """Remind users to learn by email"""
+    subject = 'GoEn'
+    from_email = 'golearnengfast@gmail.com'
+
+    for user in users:
+        amount = get_words_to_learn(user.pk).count()
+        if amount > 0:
+            with default_storage.open('../media/emails/reminder_to_learn.html', 'r') as file:
+                message = file.read()
+            message = message.replace('USERNAME', user.username)
+            message = message.replace('AMOUNT', str(amount))
+        else:
+            with default_storage.open('../media/emails/reminder_to_add_words.html', 'r') as file:
+                message = file.read()
+            message = message.replace('USERNAME', user.username)
+
+        recipient_list = [user.email]
+        send_email(subject, message, from_email, recipient_list)
 
 
 def _decrease_word_count(word_learned: WordLearned) -> None:
@@ -89,12 +118,13 @@ def _increase_word_count(word_learned: WordLearned) -> None:
         WordLearned.objects.filter(pk=word_learned.pk).update(progress=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
                                                                   word_learned.progress + 1))
-    else:
+    elif word_learned.progress < 7:
         WordLearned.objects.filter(pk=word_learned.pk).update(progress=word_learned.progress + 1,
                                                               next_day_learn=_date_update(
                                                                   word_learned.progress))
-    if word_learned.progress >= 7:
-        WordLearned.objects.filter(pk=word_learned.pk).update(is_learned=True)
+
+    if WordLearned.objects.filter(pk=word_learned.pk)[0].progress >= 7:
+        WordLearned.objects.filter(pk=word_learned.pk).update(is_learned=True, next_day_learn=_date_update(0))
 
 
 def _out_compliment() -> str:
@@ -126,7 +156,6 @@ def _date_update(count: int) -> datetime.date:
 
 def _get_sentence_by_word(story: str, word: str) -> str:
     story += '.'
-    sentence = 'No sentence'
     try:
         pattern = re.compile(r"([A-Z][^.!?]*({})[^.!?]*[.!?])".format(word))
         sentence = pattern.findall(story)[0][0].replace(word, '*' * len(word))
@@ -137,4 +166,5 @@ def _get_sentence_by_word(story: str, word: str) -> str:
             sentence = pattern.findall(story)[0][0].replace(word.capitalize(), '*' * len(word))
             return sentence
         except IndexError:
+            sentence = '*' * len(word)
             return sentence
