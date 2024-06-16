@@ -16,3 +16,11 @@ def get_amount_learning_words(ranking_list, user):
 @register.filter
 def get_amount_learned_words(ranking_list, user):
     return ranking_list[user.username + '_amount_learned_words']
+
+
+@register.filter
+def multiply(value, arg):
+    try:
+        return float(value) * float(arg)
+    except (ValueError, TypeError):
+        return ''
